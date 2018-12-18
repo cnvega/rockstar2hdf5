@@ -15,7 +15,8 @@
 /*
 #define NUMPROP 40      // Original format
 */
-#define NUMPROP 42
+#define NUMPROP 42      // num columns in file
+#define NUMFIELDS 32    // num properties  
 
 struct Halo_Data {
    int64_t ID;      // (1) 
@@ -51,8 +52,24 @@ struct Halo_Data {
    float   rvmax;       // (42)
 };
 
+enum Halo_Prop_Type {FLOAT, INT64, DOUBLE, INT};
+
+struct Halo_Prop_Info {
+   char name[25];
+   enum Halo_Prop_Type type;
+   short int dims;
+   void *ptr;
+};
+
+// Defined and initialized in halos.c
+extern struct Halo_Prop_Info Halo_Info[NUMFIELDS];
+
+
 void parse_string_to_halo(struct Halo_Data *halo, char *line);
 
 void parse_halo_to_string(char *line, struct Halo_Data *halo);
 
+void *check_realloc(void *ptr, size_t size);
+
+void fill_halo_info_ptrs(struct Halo_Data * halo);
 #endif

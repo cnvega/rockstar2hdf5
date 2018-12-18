@@ -1,9 +1,10 @@
-CC = gcc
+CC = h5cc
+H5CC = h5cc
 CCFLAGS = -std=c99 
-CCFLAGS += -O2 
-#CCFLAGS += -g
+CCFLAGS += -O2 -Wno-unused-result
+#CCFLAGS += -g -O0
 
-all: ascii2bin  bin2ascii split_ascii split_binary
+all: ascii2bin  bin2ascii ascii2hdf5 split_ascii split_binary
 
 .PHONY: clean
 
@@ -22,6 +23,9 @@ split_ascii: split_ascii.o halos.o
 split_binary: split_binary.o halos.o
 	$(CC) split_binary.o halos.o -o split_binary $(CCFLAGS)
 
+ascii2hdf5: ascii2hdf5.o halos.o
+	$(H5CC) ascii2hdf5.o halos.o -o ascii2hdf5 $(CCFLAGS)
+
 clean:
-	rm -f ascii2bin bin2ascii split_ascii split_binary *.o
+	rm -f ascii2bin bin2ascii ascii2hdf5 split_ascii split_binary *.o
 
