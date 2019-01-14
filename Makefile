@@ -1,7 +1,7 @@
 CC = h5cc
 H5CC = h5cc
 CCFLAGS = -std=c99 
-CCFLAGS += -O2 -Wno-unused-result
+CCFLAGS += -O2 -Wno-unused-result -Wno-unused-but-set-variable
 #CCFLAGS += -g -O0
 
 all: ascii2bin  bin2ascii ascii2hdf5 split_ascii split_binary

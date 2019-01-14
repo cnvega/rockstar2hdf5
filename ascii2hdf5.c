@@ -22,10 +22,10 @@ void write_halo_properties(struct Halo_Data*);
 int main(int argc, char **argv)
 {
    char inname[LINE_MAX], outname[LINE_MAX];
-   FILE *infile, *outfile;
+   FILE *infile;
    char stmp[LINE_MAX];
    char **header, *header_all;
-   int64_t i, nheader=0, nhalos=0;
+   int64_t i, nheader=0;
    
    struct Halo_Data halos[READSIZE];
 
@@ -195,7 +195,7 @@ herr_t write_dataset(char *dname, hid_t data_type, int ndims, void *data)
 
 void write_halo_properties(struct Halo_Data * halos )
 {
-   int p, i, index;
+   int p, i;
    int64_t h, *i64buf;
    float *buffer, *buffer3d;
 

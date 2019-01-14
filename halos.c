@@ -36,7 +36,8 @@ struct Halo_Prop_Info Halo_Info[NUMFIELDS] = {
         { "M_pe_Diemer", FLOAT, 1, NULL},
    // EXTRA properties:
         { "Halfmass_Radius", FLOAT, 1, NULL},
-        { "rvmax", FLOAT, 1, NULL}  
+        { "rvmax", FLOAT, 1, NULL}, 
+        { "PID", INT64, 1, NULL}  
 };
 
 void parse_string_to_halo(struct Halo_Data *halo, char *line)
@@ -49,7 +50,7 @@ void parse_string_to_halo(struct Halo_Data *halo, char *line)
           "%f %f %f %f %f "                  // (33-37) 
           "%f %e %e "                        // (38-40) 
    // EXTRA properties:
-          "%f %f\n",       // (41-42)
+          "%f %f %"SCNd64"\n",       // (41-43)
 
          &(halo->ID), &(halo->DescID),  &(halo->Mvir), &(halo->Vmax), 
          &(halo->Vrms), &(halo->Rvir), &(halo->Rs), &(halo->Np), 
@@ -65,20 +66,20 @@ void parse_string_to_halo(struct Halo_Data *halo, char *line)
          &(halo->A_500c[0]), &(halo->A_500c[1]), &(halo->A_500c[2]), 
          &(halo->T_div_U), &(halo->M_pe_Behroozi), &(halo->M_pe_Diemer),
    // EXTRA properties:
-         &(halo->Halfmass_Radius), &(halo->rvmax)  ); 
+         &(halo->Halfmass_Radius), &(halo->rvmax), &(halo->PID) ); 
 }
 
 void parse_halo_to_string(char *line, struct Halo_Data *halo)
 {
    sprintf(line, 
-          "%"PRId64" %"PRId64" %.4e %.2f %.2f %.3f %.3f %"PRId64" "   // (1-8) 
+          "%"PRId64" %"PRId64" %.3e %.2f %.2f %.3f %.3f %"PRId64" "   // (1-8) 
           "%.5f %.5f %.5f %.2f %.2f %.2f %.3e %.3e %.3e "   // (9-17)  
           "%.5f %.5f %.4e %.4e %.4e %.4e %.4e "             // (18-24)
 	  "%.5f %.2f %.5f %.5f %.5f %.5f %.5f %.5f "        // (25-32) 
           "%.5f %.5f %.5f %.5f %.5f "                   // (33-37) 
           "%.4f %.3e %.3e "                             // (38-40) 
    // EXTRA properties:
-          "%.3f %.3f\n",       // (41-42)
+          "%.3f %.3f %"PRId64"\n",       // (41-42)
 
          halo->ID, halo->DescID,  halo->Mvir, halo->Vmax, 
          halo->Vrms, halo->Rvir, halo->Rs, halo->Np, 
@@ -94,7 +95,7 @@ void parse_halo_to_string(char *line, struct Halo_Data *halo)
          halo->A_500c[0], halo->A_500c[1], halo->A_500c[2], 
          halo->T_div_U, halo->M_pe_Behroozi, halo->M_pe_Diemer,
    // EXTRA properties:
-         halo->Halfmass_Radius, halo->rvmax  ); 
+         halo->Halfmass_Radius, halo->rvmax, halo->PID  ); 
 }
 
 void *check_realloc(void *ptr, size_t size) {
@@ -142,6 +143,7 @@ void fill_halo_info_ptrs(struct Halo_Data * halo)
    // EXTRA properties:
     Halo_Info[30].ptr = &halo->Halfmass_Radius;
     Halo_Info[31].ptr = &halo->rvmax; 
+    Halo_Info[32].ptr = &halo->PID; 
 }
 
 #endif
