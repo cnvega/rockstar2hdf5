@@ -8,7 +8,6 @@ int main(int argc, char **argv)
    FILE *infile, *outfile;
    char stmp[LINE_MAX];
    char **header;
-   struct Halo_Data halo;
    int64_t maxhalos;
    int64_t i, nheader=0, nhalos=0;
    int filectr;

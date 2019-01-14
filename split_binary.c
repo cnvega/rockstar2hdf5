@@ -6,7 +6,6 @@ int main(int argc, char **argv)
 {
    char inname[LINE_MAX];
    FILE *infile, *outfile;
-   char stmp[LINE_MAX];
    char **header;
    struct Halo_Data halo;
    int64_t maxhalos;
