@@ -30,7 +30,7 @@ int main(int argc, char **argv)
    struct Halo_Data halos[READSIZE];
 
    hid_t    dataset, dataspace, attribute;
-   hsize_t  dims, dims2[2];
+   hsize_t  dims, dims2; 
    herr_t   status;
    hid_t    dtype;
    size_t   size;
@@ -85,13 +85,17 @@ int main(int argc, char **argv)
    dtype = H5Tcopy(H5T_C_S1);
    size = LINE_MAX;
    status = H5Tset_size(dtype, size);
-   dims2[0] = nheader; 
+   /*dims2[0] = nheader; 
    dims2[1] = 1;
    dataspace = H5Screate_simple(2, dims2, NULL);
    dataset   = H5Dcreate2(H5File, "Header", dtype, dataspace, H5P_DEFAULT, _DEFP);
-   status = H5Dwrite(dataset, dtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, header_all);
-   
-   status = H5Dclose(dataset);
+   status = H5Dwrite(dataset, dtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, header_all);*/
+   dims2 = nheader;
+   dataspace = H5Screate_simple(1, &dims2, NULL);
+   attribute = H5Acreate(H5File, "Header", dtype, dataspace, _DEFP);
+   status = H5Awrite(attribute, dtype, header_all);
+   status = H5Aclose(attribute);
+   //status = H5Dclose(dataset);
    status = H5Sclose(dataspace);
   
 
@@ -211,25 +215,15 @@ void write_halo_properties(struct Halo_Data * halos )
       
       switch (Halo_Info[p].type) {
          case FLOAT:
-            if (Halo_Info[p].dims == 1) {
-               for (h=0; h<ReadHalos; h++)
-                  buffer[h] = *((float*)&loc[h]);
-               write_dataset(Halo_Info[p].name, H5T_NATIVE_FLOAT, 
-                             Halo_Info[p].dims, buffer);
-            }
-            if (Halo_Info[p].dims == 3) {
-               for (h=0; h<ReadHalos; h++)
-                  for (i=0; i<3; i++) 
-                     buffer3d[i+3*h] = ((float*)&loc[h])[i];
-               write_dataset(Halo_Info[p].name, H5T_NATIVE_FLOAT, 
-                             Halo_Info[p].dims, buffer3d);
-            }
+            for (h=0; h<ReadHalos; h++)
+               buffer[h] = *((float*)&loc[h]);
+            write_dataset(Halo_Info[p].name, H5T_NATIVE_FLOAT, 1, buffer);
             break;
 
          case INT64:
             for (h=0; h<ReadHalos; h++)
                i64buf[h] = *((int64_t*)&loc[h]);
-            write_dataset(Halo_Info[p].name, H5T_NATIVE_INT64, Halo_Info[p].dims, i64buf);
+            write_dataset(Halo_Info[p].name, H5T_NATIVE_INT64, 1, i64buf);
             break;
        }
    }
