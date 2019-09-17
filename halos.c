@@ -4,40 +4,50 @@
 #include "halos.h"
 
 struct Halo_Prop_Info Halo_Info[NUMFIELDS] = {
-        { "ID", INT64, 1, NULL},  
-        { "DescID", INT64, 1, NULL}, 
-        { "Mvir", FLOAT, 1, NULL},
-        { "Vmax", FLOAT, 1, NULL},
-        { "Vrms", FLOAT, 1, NULL},
-        { "Rvir", FLOAT, 1, NULL},
-        { "Rs", FLOAT, 1, NULL},
-        { "Np", INT64, 1, NULL},
-        { "X", FLOAT, 3, NULL},
-        { "V", FLOAT, 3, NULL},
-        { "J", FLOAT, 3, NULL},
-        { "Spin", FLOAT, 1, NULL},
-        { "rs_klypin", FLOAT, 1, NULL},
-        { "Mvir_all", FLOAT, 1, NULL},
-        { "M200b", FLOAT, 1, NULL},
-        { "M200c", FLOAT, 1, NULL},
-        { "M500c", FLOAT, 1, NULL},
-        { "M2500c", FLOAT, 1, NULL},
-        { "Xoff", FLOAT, 1, NULL}, 
-        { "Voff", FLOAT, 1, NULL},
-        { "spin_bullock", FLOAT, 1, NULL},
-        { "b_to_a", FLOAT, 1, NULL}, 
-        { "c_to_a", FLOAT, 1, NULL},
-        { "A", FLOAT, 3, NULL},
-        { "b_to_a_500c", FLOAT, 1, NULL},
-        { "c_to_a_500c", FLOAT, 1, NULL},
-        { "A_500c", FLOAT, 3, NULL},
-        { "T_div_U", FLOAT, 1, NULL},
-        { "M_pe_Behroozi", FLOAT, 1, NULL},
-        { "M_pe_Diemer", FLOAT, 1, NULL},
+        { "ID", INT64, NULL},  
+        { "DescID", INT64, NULL}, 
+        { "Mvir", FLOAT, NULL},
+        { "Vmax", FLOAT, NULL},
+        { "Vrms", FLOAT, NULL},
+        { "Rvir", FLOAT, NULL},
+        { "Rs", FLOAT, NULL},
+        { "Np", INT64, NULL},
+        { "X", FLOAT, NULL},
+        { "Y", FLOAT, NULL},
+        { "Z", FLOAT, NULL},
+        { "VX", FLOAT, NULL},
+        { "VY", FLOAT, NULL},
+        { "VZ", FLOAT, NULL},
+        { "JX", FLOAT, NULL},
+        { "JY", FLOAT, NULL},
+        { "JZ", FLOAT, NULL},
+        { "Spin", FLOAT, NULL},
+        { "rs_klypin", FLOAT,NULL},
+        { "Mvir_all", FLOAT, NULL},
+        { "M200b", FLOAT, NULL},
+        { "M200c", FLOAT, NULL},
+        { "M500c", FLOAT, NULL},
+        { "M2500c", FLOAT, NULL},
+        { "Xoff", FLOAT, NULL}, 
+        { "Voff", FLOAT, NULL},
+        { "spin_bullock", FLOAT, NULL},
+        { "b_to_a", FLOAT, NULL}, 
+        { "c_to_a", FLOAT, NULL},
+        { "Ax", FLOAT, NULL},
+        { "Ay", FLOAT, NULL},
+        { "Az", FLOAT, NULL},
+        { "b_to_a_500c", FLOAT, NULL},
+        { "c_to_a_500c", FLOAT, NULL},
+        { "Ax_500c", FLOAT, NULL},
+        { "Ay_500c", FLOAT, NULL},
+        { "Az_500c", FLOAT, NULL},
+        { "T_div_U", FLOAT, NULL},
+        { "M_pe_Behroozi", FLOAT, NULL},
+        { "M_pe_Diemer", FLOAT, NULL},
    // EXTRA properties:
-        { "Halfmass_Radius", FLOAT, 1, NULL},
-        { "rvmax", FLOAT, 1, NULL}, 
-        { "PID", INT64, 1, NULL}  
+        { "Halfmass_Radius", FLOAT, NULL},
+        { "rvmax", FLOAT, NULL}, 
+        { "PID", INT64, NULL}  
 };
 
 void parse_string_to_halo(struct Halo_Data *halo, char *line)
@@ -118,32 +128,42 @@ void fill_halo_info_ptrs(struct Halo_Data * halo)
     Halo_Info[5].ptr = &halo->Rvir;
     Halo_Info[6].ptr = &halo->Rs;
     Halo_Info[7].ptr = &halo->Np;
-    Halo_Info[8].ptr = &halo->X;
-    Halo_Info[9].ptr = &halo->V;
-    Halo_Info[10].ptr = &halo->J;
-    Halo_Info[11].ptr = &halo->Spin;
-    Halo_Info[12].ptr = &halo->rs_klypin;
-    Halo_Info[13].ptr = &halo->Mvir_all;
-    Halo_Info[14].ptr = &halo->M200b;
-    Halo_Info[15].ptr = &halo->M200c;
-    Halo_Info[16].ptr = &halo->M500c;
-    Halo_Info[17].ptr = &halo->M2500c;
-    Halo_Info[18].ptr = &halo->Xoff; 
-    Halo_Info[19].ptr = &halo->Voff;
-    Halo_Info[20].ptr = &halo->spin_bullock;
-    Halo_Info[21].ptr = &halo->b_to_a;
-    Halo_Info[22].ptr = &halo->c_to_a;
-    Halo_Info[23].ptr = &halo->A;
-    Halo_Info[24].ptr = &halo->b_to_a_500c;
-    Halo_Info[25].ptr = &halo->c_to_a_500c;
-    Halo_Info[26].ptr = &halo->A_500c;
-    Halo_Info[27].ptr = &halo->T_div_U;
-    Halo_Info[28].ptr = &halo->M_pe_Behroozi;
-    Halo_Info[29].ptr = &halo->M_pe_Diemer;
+    Halo_Info[8].ptr = &halo->X[0];
+    Halo_Info[9].ptr = &halo->X[1];
+    Halo_Info[10].ptr = &halo->X[2];
+    Halo_Info[11].ptr = &halo->V[0];
+    Halo_Info[12].ptr = &halo->V[1];
+    Halo_Info[13].ptr = &halo->V[2];
+    Halo_Info[14].ptr = &halo->J[0];
+    Halo_Info[15].ptr = &halo->J[1];
+    Halo_Info[16].ptr = &halo->J[2];
+    Halo_Info[17].ptr = &halo->Spin;
+    Halo_Info[18].ptr = &halo->rs_klypin;
+    Halo_Info[19].ptr = &halo->Mvir_all;
+    Halo_Info[20].ptr = &halo->M200b;
+    Halo_Info[21].ptr = &halo->M200c;
+    Halo_Info[22].ptr = &halo->M500c;
+    Halo_Info[23].ptr = &halo->M2500c;
+    Halo_Info[24].ptr = &halo->Xoff; 
+    Halo_Info[25].ptr = &halo->Voff;
+    Halo_Info[26].ptr = &halo->spin_bullock;
+    Halo_Info[27].ptr = &halo->b_to_a;
+    Halo_Info[28].ptr = &halo->c_to_a;
+    Halo_Info[29].ptr = &halo->A[0];
+    Halo_Info[30].ptr = &halo->A[1];
+    Halo_Info[31].ptr = &halo->A[2];
+    Halo_Info[32].ptr = &halo->b_to_a_500c;
+    Halo_Info[33].ptr = &halo->c_to_a_500c;
+    Halo_Info[34].ptr = &halo->A_500c[0];
+    Halo_Info[35].ptr = &halo->A_500c[1];
+    Halo_Info[36].ptr = &halo->A_500c[2];
+    Halo_Info[37].ptr = &halo->T_div_U;
+    Halo_Info[38].ptr = &halo->M_pe_Behroozi;
+    Halo_Info[39].ptr = &halo->M_pe_Diemer;
    // EXTRA properties:
-    Halo_Info[30].ptr = &halo->Halfmass_Radius;
-    Halo_Info[31].ptr = &halo->rvmax; 
-    Halo_Info[32].ptr = &halo->PID; 
+    Halo_Info[40].ptr = &halo->Halfmass_Radius;
+    Halo_Info[41].ptr = &halo->rvmax; 
+    Halo_Info[42].ptr = &halo->PID; 
 }
 
 #endif
