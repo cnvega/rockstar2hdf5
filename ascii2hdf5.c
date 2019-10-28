@@ -14,7 +14,7 @@ int64_t  TotNumHalos, ReadHalos;
 hid_t    H5File;
 
 // local prototypes: 
-herr_t write_dataset(char*, hid_t, int, void*);
+herr_t write_dataset1(char*, hid_t, void*);
 void read_halo_block(FILE *, struct Halo_Data*);
 void write_halo_properties(struct Halo_Data*);
 
@@ -133,13 +133,12 @@ void read_halo_block(FILE *fin, struct Halo_Data *halos)
    }
 }
 
-
-herr_t write_dataset(char *dname, hid_t data_type, int ndims, void *data)
+herr_t write_dataset1(char *dname, hid_t data_type, void *data)
 {
-   hsize_t   dims[2] = {ReadHalos, ndims}; 
-   hsize_t   maxdims[2] = {H5S_UNLIMITED, ndims};
-   hsize_t   chunk_dims[2] = {CHUNKSIZE, ndims};
-   hsize_t   offset[2], size[2];
+   hsize_t   dims[1] = {ReadHalos}; 
+   hsize_t   maxdims[1] = {H5S_UNLIMITED};
+   hsize_t   chunk_dims[1] = {CHUNKSIZE};
+   hsize_t   offset[1], size[1];
    hid_t     dataset;  
    hid_t     filespace, memspace;
    hid_t     prop;                     
@@ -151,8 +150,8 @@ herr_t write_dataset(char *dname, hid_t data_type, int ndims, void *data)
       prop = H5Pcreate(H5P_DATASET_CREATE);
 
       // Modify dataset creation properties, i.e. enable chunking  
-      status = H5Pset_chunk(prop, 2, chunk_dims);
-      memspace =  H5Screate_simple(2, dims, maxdims);
+      status = H5Pset_chunk(prop, 1, chunk_dims);
+      memspace =  H5Screate_simple(1, dims, maxdims);
 
       dataset = H5Dcreate2(H5File, dname, data_type, memspace,
                            H5P_DEFAULT, prop, H5P_DEFAULT);
@@ -167,12 +166,10 @@ herr_t write_dataset(char *dname, hid_t data_type, int ndims, void *data)
    else  // Extend an existing dataset and write the data in that portion 
    {
       size[0] = TotNumHalos + ReadHalos;
-      size[1] = ndims;
   
       offset[0] = TotNumHalos;
-      offset[1] = 0;
 
-      memspace = H5Screate_simple(2, dims, NULL);
+      memspace = H5Screate_simple(1, dims, NULL);
 
       dataset = H5Dopen2(H5File, dname, H5P_DEFAULT);
       status  = H5Dset_extent(dataset, size);
@@ -217,13 +214,13 @@ void write_halo_properties(struct Halo_Data * halos )
          case FLOAT:
             for (h=0; h<ReadHalos; h++)
                buffer[h] = *((float*)&loc[h]);
-            write_dataset(Halo_Info[p].name, H5T_NATIVE_FLOAT, 1, buffer);
+            write_dataset1(Halo_Info[p].name, H5T_NATIVE_FLOAT, buffer);
             break;
 
          case INT64:
             for (h=0; h<ReadHalos; h++)
                i64buf[h] = *((int64_t*)&loc[h]);
-            write_dataset(Halo_Info[p].name, H5T_NATIVE_INT64, 1, i64buf);
+            write_dataset1(Halo_Info[p].name, H5T_NATIVE_INT64, i64buf);
             break;
        }
    }
